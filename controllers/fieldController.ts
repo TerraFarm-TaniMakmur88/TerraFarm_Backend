@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createField, deleteField, getFieldById, getFieldByUserId, updateField,  } from '../services/fieldService';
+import { createField, deleteField, getFieldById, getFieldByUserId, updateField, updatePlantDate, updateStatus,  } from '../services/fieldService';
 import { getLoggedInId } from '../middlewares/authMiddleware';
 
 export const getFieldByUser = async (req: Request, res: Response) => {
@@ -42,9 +42,10 @@ export const getField = async (req: Request, res: Response) => {
 
 export const createNewField = async (req: Request, res: Response) => {
     try {
-        const { cropName, area, soilType } = req.body;
+        var { cropName, area, soilType, status, plantDate } = req.body;
+        plantDate = new Date(plantDate);
         const userId = getLoggedInId(req);
-        const newField = await createField({ userId, cropName, area, soilType });
+        const newField = await createField({ userId, cropName, area, soilType, status, plantDate });
         
         return res.status(201).json(newField);
     } catch (error) {
@@ -54,7 +55,8 @@ export const createNewField = async (req: Request, res: Response) => {
 
 export const updateFieldData = async (req: Request, res: Response) => {
     try {
-        const { id, cropName, area, soilType } = req.body;
+        var { id, cropName, area, soilType, status, plantDate } = req.body;
+        plantDate = new Date(plantDate);
         const currField = await getFieldById(id);
         if (!currField || currField?.length <= 0) {
             return res.status(404).json({ message: "Field not found" });
@@ -62,7 +64,43 @@ export const updateFieldData = async (req: Request, res: Response) => {
         if (getLoggedInId(req) != currField![0].userId) {
             return res.status(403).json({ message: 'User not valid for this field' });
         }
-        const updatedField = await updateField({ id, cropName, area, soilType });
+        const updatedField = await updateField({ id, cropName, area, soilType, status, plantDate });
+        
+        return res.status(200).json(updatedField);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const updateFieldStatus = async (req: Request, res: Response) => {
+    try {
+        const { id, status } = req.body;
+        const currField = await getFieldById(id);
+        if (!currField || currField?.length <= 0) {
+            return res.status(404).json({ message: "Field not found" });
+        }
+        if (getLoggedInId(req) != currField![0].userId) {
+            return res.status(403).json({ message: 'User not valid for this field' });
+        }
+        const updatedField = await updateStatus(id, status);
+        
+        return res.status(200).json(updatedField);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const updateFieldPlantDate = async (req: Request, res: Response) => {
+    try {
+        const { id, plantDate } = req.body;
+        const currField = await getFieldById(id);
+        if (!currField || currField?.length <= 0) {
+            return res.status(404).json({ message: "Field not found" });
+        }
+        if (getLoggedInId(req) != currField![0].userId) {
+            return res.status(403).json({ message: 'User not valid for this field' });
+        }
+        const updatedField = await updatePlantDate(id, new Date(plantDate));
         
         return res.status(200).json(updatedField);
     } catch (error) {

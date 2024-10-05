@@ -7,6 +7,8 @@ interface Field {
   cropName: string;
   area: string;
   soilType: string;
+  status: string;
+  plantDate: Date;
 }
 
 export const getFieldByUserId = async (userId: bigint) => {
@@ -35,7 +37,8 @@ export const createField = async (field: Field) => {
     const { data, error } = await supabase
     .from('Field')
     .insert([
-        { userId: field.userId, cropName: field.cropName, area: field.area, soilType: field.soilType },
+        { userId: field.userId, cropName: field.cropName, area: field.area, soilType: field.soilType, 
+            status: field.status, plantDate: field.plantDate },
     ])
     .select();
     
@@ -48,8 +51,35 @@ export const createField = async (field: Field) => {
 export const updateField = async (field: Field) => {
     const { data, error } = await supabase
     .from('Field')
-    .update({ cropName: field.cropName, area: field.area, soilType: field.soilType })
+    .update({ cropName: field.cropName, area: field.area, soilType: field.soilType, 
+        status: field.status, plantDate: field.plantDate })
     .eq('id', field.id)
+    .select();
+    
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
+export const updateStatus = async (id:bigint, status: string) => {
+    const { data, error } = await supabase
+    .from('Field')
+    .update({ status: status })
+    .eq('id', id)
+    .select();
+    
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
+export const updatePlantDate = async (id:bigint, plantDate: Date) => {
+    const { data, error } = await supabase
+    .from('Field')
+    .update({ plantDate: plantDate })
+    .eq('id', id)
     .select();
     
     if (error) {

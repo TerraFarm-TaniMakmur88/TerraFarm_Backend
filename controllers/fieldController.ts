@@ -47,6 +47,7 @@ export const createNewFields = async (req: Request, res: Response) => {
         fields.forEach(field => {
             field.userId = userId;
             field.plantDate = new Date(field.plantDate);
+            field.harvestPred = Math.round(Math.random() * 10);
         });
         const newField = await createField(fields);
         const newLocation = await updateLocation(userId, location);
@@ -59,7 +60,7 @@ export const createNewFields = async (req: Request, res: Response) => {
 
 export const updateFieldData = async (req: Request, res: Response) => {
     try {
-        var { id, cropName, area, soilType, status, plantDate } = req.body;
+        var { id, cropName, area, soilType, status, plantDate, harvestPred } = req.body;
         plantDate = new Date(plantDate);
         const currField = await getFieldById(id);
         if (!currField || currField?.length <= 0) {

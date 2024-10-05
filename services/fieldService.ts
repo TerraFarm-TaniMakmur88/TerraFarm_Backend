@@ -9,6 +9,7 @@ interface Field {
   soilType: string;
   status: string;
   plantDate: Date;
+  harvestPred?: number;
 }
 
 export const getFieldByUserId = async (userId: bigint) => {
@@ -51,7 +52,8 @@ export const updateField = async (field: Field) => {
     const { data, error } = await supabase
     .from('Field')
     .update({ cropName: field.cropName, area: field.area, soilType: field.soilType, 
-        status: field.status, plantDate: field.plantDate })
+        status: field.status, plantDate: field.plantDate, 
+        harvestPred: (field.status=="planting" ? Math.round(Math.random() * 10) : null)  })
     .eq('id', field.id)
     .select();
     
@@ -64,7 +66,7 @@ export const updateField = async (field: Field) => {
 export const updateStatus = async (id:bigint, status: string) => {
     const { data, error } = await supabase
     .from('Field')
-    .update({ status: status })
+    .update({ status: status, harvestPred: (status=="planting" ? Math.round(Math.random() * 10) : null) })
     .eq('id', id)
     .select();
     

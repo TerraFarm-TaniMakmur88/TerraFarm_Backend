@@ -1,4 +1,6 @@
 import supabase from "../supabaseClient";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 interface User {
   id?: bigint;
@@ -8,6 +10,8 @@ interface User {
   password: string;
   location: string;
 }
+
+const JWT_SECRET = process.env.JWT_SECRET || "";
 
 export const getUserById = async (id: bigint) => {
   const { data, error } = await supabase
@@ -23,9 +27,10 @@ export const getUserById = async (id: bigint) => {
 };
 
 export const createUser = async (user: User) => {
+  const hashedPassword = await bcrypt.hash(user.password, 10);
   const { data, error } = await supabase
     .from('User')
-    .insert([user])
+    .insert([{ ...user, password: hashedPassword }])
     .select()
     .single();
 
@@ -36,13 +41,24 @@ export const createUser = async (user: User) => {
 };
 
 export const login = async (email: string, password: string) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
+  const { data, error } = await supabase
+    .from('User')
+    .select('*')
+    .eq('email', email)
+    .single();
+
+  if (error || !data) {
+    throw new Error('Invalid email or password');
+  }
+
+  const passwordMatch = await bcrypt.compare(password, data.password);
+  if (!passwordMatch) {
+    throw new Error('Invalid email or password');
+  }
+
+  const token = jwt.sign({ id: data.id, email: data.email }, JWT_SECRET, {
+    expiresIn: '1h',
   });
 
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
+  return { user: data, token };
 };

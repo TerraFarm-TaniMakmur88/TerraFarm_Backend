@@ -30,9 +30,9 @@ export const createNewUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const user = await loginUser(email, password);
+    const { user, token } = await login(email, password);
     
-    return res.status(200).json(user);
+    return res.status(200).json({ token });
   } catch (error) {
     return res.status(401).json({ message: error.message });
   }

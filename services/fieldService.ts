@@ -35,12 +35,14 @@ export const getFieldById = async (id: bigint) => {
 };
 
 export const getFieldByStatus = async (userId: bigint, status: string = "planting") => {
-    var fields = await getFieldByUserId(userId);
-    fields = fields!.filter((value) => {
-        value.status === status;
-    });
+    let { data: Field, error } = await supabase
+    .from('Field')
+    .select('*').eq('userId', userId).eq('status', status);
 
-    return fields;
+    if (error) {
+        throw new Error(error.message);
+    }
+    return Field;
 }   
 
 export const createField = async (field: Field[]) => {

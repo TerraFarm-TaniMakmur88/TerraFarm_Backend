@@ -58,8 +58,10 @@ export const getDashboardData = async (coordinates: number[], userId: bigint) =>
         })
     }
     
-    const insights = ["Water all your crops today", "Switch to corn", "Be a florist instead", "Lorem ipsum dolor sit amet", 
-        "idk what to write", "heeeeeeeeeeeeelp - ...", "bruh"];
+    const insights = ["Water all your crops today", "Prepare for drought in the next few days", 
+        "Water is going to be overflowing soon, get some more seeds", "Focus on growing apples for the next few months", 
+        "Apply water conservation agents to keep sufficient water supply", "There's going to be a storm, make sure your irrigation runs well", 
+        "Use porous materials to preserve water."];
     
     const dashboardData = {
         listData : listData,

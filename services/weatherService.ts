@@ -39,26 +39,29 @@ export const getWeatherInDateRange = async (coordinates: number[], startDate: Da
 };
 
 export const getDashboardData = async (coordinates: number[], userId: bigint) => {
-    const currWeather = await getNowWeather(coordinates);
-    const currWeatherData = {temperature: currWeather.filter((value) => {
-        return value.parameter === "t_2m:C";
-    })[0].coordinates[0].dates[0].value, date: new Date().toLocaleDateString('id-ID'), 
-        location: (await getUserById(userId)).location};
-
-
     var today = new Date();
     const rawListWeatherData = await getWeatherInDateRange(coordinates, new Date(new Date().setDate(today.getDate() - 2)), new Date(new Date().setDate(today.getDate() + 2)), "24H");
-    const listData = {
-        rainfall: rawListWeatherData.filter((value) => {return value.parameter=="precip_1h:mm"})[0].coordinates[0].dates,
-        wind: rawListWeatherData.filter((value) => {return value.parameter=="wind_speed_10m:ms"})[0].coordinates[0].dates,
-        humidity: rawListWeatherData.filter((value) => {return value.parameter=="absolute_humidity_2m:gm3"})[0].coordinates[0].dates,
-    };
+    const tempData = rawListWeatherData.filter((value) => {return value.parameter=="t_2m:C"})[0].coordinates[0].dates;
+    const rainfallData = rawListWeatherData.filter((value) => {return value.parameter=="precip_1h:mm"})[0].coordinates[0].dates;
+    const windspeedData = rawListWeatherData.filter((value) => {return value.parameter=="wind_speed_10m:ms"})[0].coordinates[0].dates;
+    const humidityData = rawListWeatherData.filter((value) => {return value.parameter=="absolute_humidity_2m:gm3"})[0].coordinates[0].dates;
+    
+    const listData : any[] = [];
+    for (let i=0; i<tempData.length; i++) {
+        listData.push({
+            temperature: tempData[i].value,
+            date: tempData[i].date, 
+            location: (await getUserById(userId)).location,
+            rainfall: rainfallData[i].value,
+            wind: windspeedData[i].value,
+            humidity: humidityData[i].value,
+        })
+    }
     
     const insights = ["Water all your crops today", "Switch to corn", "Be a florist instead", "Lorem ipsum dolor sit amet", 
         "idk what to write", "heeeeeeeeeeeeelp - ...", "bruh"];
     
     const dashboardData = {
-        currTempData : currWeatherData,
         listData : listData,
         insights : insights
     } 

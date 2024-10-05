@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getUserById, createUser } from '../services/userService';
+import { getUserById, createUser, login } from '../services/userService';
 
 export const getUser = async (req: Request, res: Response) => {
   try {
@@ -24,5 +24,16 @@ export const createNewUser = async (req: Request, res: Response) => {
     return res.status(201).json(newUser);
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const loginUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const user = await loginUser(email, password);
+    
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(401).json({ message: error.message });
   }
 };

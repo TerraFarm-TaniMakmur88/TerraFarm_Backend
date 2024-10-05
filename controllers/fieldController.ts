@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { createField, deleteField, getFieldById, getFieldByUserId, updateField, updatePlantDate, updateStatus,  } from '../services/fieldService';
 import { getLoggedInId } from '../middlewares/authMiddleware';
+import { updateLocation } from '../services/userService';
 
 export const getFieldByUser = async (req: Request, res: Response) => {
   try {
@@ -40,14 +41,17 @@ export const getField = async (req: Request, res: Response) => {
   }
 };
 
-export const createNewField = async (req: Request, res: Response) => {
+export const createNewFields = async (req: Request, res: Response) => {
     try {
-        var { cropName, area, soilType, status, plantDate } = req.body;
-        plantDate = new Date(plantDate);
-        const userId = getLoggedInId(req);
-        const newField = await createField({ userId, cropName, area, soilType, status, plantDate });
+        var { userId, location, fields } = req.body;
+        fields.forEach(field => {
+            field.userId = userId;
+            field.plantDate = new Date(field.plantDate);
+        });
+        const newField = await createField(fields);
+        const newLocation = await updateLocation(userId, location);
         
-        return res.status(201).json(newField);
+        return res.status(201).json({location: newLocation, fields: newField});
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

@@ -33,13 +33,12 @@ export const getFieldById = async (id: bigint) => {
   return Field;
 };
 
-export const createField = async (field: Field) => {
+export const createField = async (field: Field[]) => {
     const { data, error } = await supabase
     .from('Field')
-    .insert([
-        { userId: field.userId, cropName: field.cropName, area: field.area, soilType: field.soilType, 
-            status: field.status, plantDate: field.plantDate },
-    ])
+    .insert(
+        field,
+    )
     .select();
     
     if (error) {

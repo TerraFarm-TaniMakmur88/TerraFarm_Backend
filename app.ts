@@ -1,8 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import fieldRouter from './routes/FieldRouter';
+import fieldRouter from './routes/fieldRouter';
 import userRouter from './routes/userRoutes';
 import env from 'dotenv';
+import { verifyToken } from './middlewares/authMiddleware';
+import weatherRouter from './routes/weatherRouter';
 
 env.config();
 
@@ -17,10 +19,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/', fieldRouter);
+
+app.use('/api/field', verifyToken, fieldRouter);
 app.use('/api/user', userRouter);
+app.use('/api/weather', weatherRouter);
 
 app.listen(port, () =>
     console.log(
         new Date().toLocaleTimeString() + `: Server is running on port ${port}...`
 ));
+
+export const exports={};

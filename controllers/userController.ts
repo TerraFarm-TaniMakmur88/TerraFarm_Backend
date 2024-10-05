@@ -33,6 +33,9 @@ export const createNewUser = async (req: Request, res: Response) => {
     
     return res.status(201).json({ userId: newUser.id });
   } catch (error) {
+    if (error.message.includes("User_email_key")) {
+      return res.status(403).json({ message: "Email is already taken" });
+    }
     return res.status(500).json({ message: error.message });
   }
 };

@@ -26,3 +26,5 @@ app.listen(port, () =>
     console.log(
         new Date().toLocaleTimeString() + `: Server is running on port ${port}...`
 ));
+
+export const exports={};

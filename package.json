@@ -1,0 +1,11 @@
+{
+  "name": "terrafarm_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tanimakmur88",
+  "license": "ISC"
+}

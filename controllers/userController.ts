@@ -21,7 +21,7 @@ export const createNewUser = async (req: Request, res: Response) => {
     const { email, name, password, location } = req.body;
     const newUser = await createUser({ email, name, password, location });
     
-    return res.status(201).json({ message: 'Account created successfully' });
+    return res.status(201).json({ userId: newUser.id });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

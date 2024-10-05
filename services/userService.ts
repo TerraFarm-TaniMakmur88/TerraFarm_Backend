@@ -56,7 +56,7 @@ export const login = async (email: string, password: string) => {
     throw new Error('Invalid email or password');
   }
 
-  const token = jwt.sign({ id: data.id, email: data.email }, JWT_SECRET, {
+  const token = jwt.sign({ id: data.id, name: data.name }, JWT_SECRET, {
     expiresIn: '1h',
   });
 

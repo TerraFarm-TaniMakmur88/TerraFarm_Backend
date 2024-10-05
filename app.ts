@@ -8,6 +8,12 @@ env.config();
 
 const app = express();
 const port = process.env.PORT || 8080;
+const corsOptions = {
+    origin: process.env.FE_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+};
 
 app.use(cors());
 app.use(express.json());

@@ -40,12 +40,15 @@ export const getField = async (req: Request, res: Response) => {
   }
 };
 
-export const createNewField = async (req: Request, res: Response) => {
+export const createNewFields = async (req: Request, res: Response) => {
     try {
-        var { cropName, area, soilType, status, plantDate } = req.body;
-        plantDate = new Date(plantDate);
+        var { fields } = req.body;
         const userId = getLoggedInId(req);
-        const newField = await createField({ userId, cropName, area, soilType, status, plantDate });
+        fields.forEach(field => {
+            field.userId = userId;
+            field.plantDate = new Date(field.plantDate);
+        });
+        const newField = await createField(fields);
         
         return res.status(201).json(newField);
     } catch (error) {

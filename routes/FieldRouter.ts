@@ -1,5 +1,5 @@
 import express from "express";
-import { createNewField, deleteFieldData, getField, getFieldByUser, updateFieldData, updateFieldPlantDate, updateFieldStatus } from "../controllers/fieldController";
+import { createNewFields, deleteFieldData, getField, getFieldByUser, updateFieldData, updateFieldPlantDate, updateFieldStatus } from "../controllers/fieldController";
 
 const fieldRouter = express.Router();
 
@@ -10,7 +10,7 @@ fieldRouter.get('/', getFieldByUser);
 fieldRouter.get('/:id', getField);
 
 /* Insert new field */
-fieldRouter.post('/', createNewField);
+fieldRouter.post('/', createNewFields);
 
 /* Update field */
 fieldRouter.put('/', updateFieldData);

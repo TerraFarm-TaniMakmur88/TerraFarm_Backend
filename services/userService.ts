@@ -8,7 +8,7 @@ interface User {
   email: string;
   name: string;
   password: string;
-  location: string;
+  location?: string;
 }
 
 const JWT_SECRET = process.env.JWT_SECRET || "";
@@ -61,4 +61,18 @@ export const login = async (email: string, password: string) => {
   });
 
   return { user: data, token };
+};
+
+export const updateLocation = async (id: bigint, location: string) => {
+  
+  const { data, error } = await supabase
+  .from('User')
+  .update({ location: location })
+  .eq('id', id)
+  .select();
+        
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data[0].location;
 };

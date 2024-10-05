@@ -5,6 +5,7 @@ import userRouter from './routes/userRoutes';
 import env from 'dotenv';
 import { verifyToken } from './middlewares/authMiddleware';
 import weatherRouter from './routes/weatherRouter';
+import calculatorRouter from './routes/calculatorRouter';
 
 env.config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use('/api/field', fieldRouter);
 app.use('/api/user', userRouter);
 app.use('/api/weather', weatherRouter);
+app.use('/api/calculator', calculatorRouter);
 
 app.listen(port, () =>
     console.log(

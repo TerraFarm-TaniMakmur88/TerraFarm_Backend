@@ -3,7 +3,6 @@ import cors from 'cors';
 import fieldRouter from './routes/fieldRouter';
 import userRouter from './routes/userRoutes';
 import env from 'dotenv';
-import { verifyToken } from './middlewares/authMiddleware';
 import weatherRouter from './routes/weatherRouter';
 import forecastRouter from './routes/forecastRouter';
 import calculatorRouter from './routes/calculatorRouter';
@@ -32,5 +31,3 @@ app.listen(port, () =>
     console.log(
         new Date().toLocaleTimeString() + `: Server is running on port ${port}...`
 ));
-
-export const exports={};

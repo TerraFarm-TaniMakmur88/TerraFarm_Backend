@@ -34,6 +34,15 @@ export const getFieldById = async (id: bigint) => {
   return Field;
 };
 
+export const getFieldByStatus = async (userId: bigint, status: string = "planting") => {
+    var fields = await getFieldByUserId(userId);
+    fields = fields!.filter((value) => {
+        value.status === status;
+    });
+
+    return fields;
+}   
+
 export const createField = async (field: Field[]) => {
     const { data, error } = await supabase
     .from('Field')

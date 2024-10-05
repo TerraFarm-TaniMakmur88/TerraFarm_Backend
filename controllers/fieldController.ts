@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createField, deleteField, getFieldById, getFieldByUserId, updateField, updatePlantDate, updateStatus,  } from '../services/fieldService';
+import { createField, deleteField, getFieldById, getFieldByStatus, getFieldByUserId, updateField, updatePlantDate, updateStatus,  } from '../services/fieldService';
 import { getLoggedInId } from '../middlewares/authMiddleware';
 import { updateLocation } from '../services/userService';
 
@@ -40,6 +40,27 @@ export const getField = async (req: Request, res: Response) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getFieldWithStatus = async (req: Request, res: Response) => {
+    try {
+        const userId = BigInt(req.query.userId);
+        const status = req.query.status;
+
+        if (getLoggedInId(req) != userId) {
+            return res.status(403).json({ message: 'User not valid for this field' });
+        }
+
+        const fields = await getFieldByStatus(userId, (status ? status : 'planting'));
+        
+        if (!fields || fields.length <= 0) {
+            return res.status(404).json({ message: `No field with status ${status} for this user found` });
+        }
+        
+        return res.status(200).json(fields);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+  };
 
 export const createNewFields = async (req: Request, res: Response) => {
     try {

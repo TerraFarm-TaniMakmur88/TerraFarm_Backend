@@ -20,7 +20,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use('/api/field', verifyToken, fieldRouter);
+app.use('/api/field', fieldRouter);
 app.use('/api/user', userRouter);
 app.use('/api/weather', weatherRouter);
 

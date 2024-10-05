@@ -1,27 +1,31 @@
 import express from "express";
-import { createNewFields, deleteFieldData, getField, getFieldByUser, updateFieldData, updateFieldPlantDate, updateFieldStatus } from "../controllers/fieldController";
+import { createNewFields, deleteFieldData, getField, getFieldByUser, getFieldWithStatus, updateFieldData, updateFieldPlantDate, updateFieldStatus } from "../controllers/fieldController";
+import { verifyToken } from "../middlewares/authMiddleware";
 
 const fieldRouter = express.Router();
 
 /* Get all fields for a user id */
-fieldRouter.get('/', getFieldByUser);
+fieldRouter.get('/', verifyToken, getFieldByUser);
+
+/* Get field by status */
+fieldRouter.get('/status', verifyToken, getFieldWithStatus);
 
 /* Get field by field id */
-fieldRouter.get('/:id', getField);
+fieldRouter.get('/:id', verifyToken, getField);
 
 /* Insert new field */
 fieldRouter.post('/', createNewFields);
 
 /* Update field */
-fieldRouter.put('/', updateFieldData);
+fieldRouter.put('/', verifyToken, updateFieldData);
 
 /* Update field status */
-fieldRouter.put('/status', updateFieldStatus);
+fieldRouter.put('/status', verifyToken, updateFieldStatus);
 
 /* Update field plant date */
-fieldRouter.put('/plant_date', updateFieldPlantDate);
+fieldRouter.put('/plant_date', verifyToken, updateFieldPlantDate);
 
 /* Delete field */
-fieldRouter.delete('/', deleteFieldData);
+fieldRouter.delete('/', verifyToken, deleteFieldData);
 
 export default fieldRouter;

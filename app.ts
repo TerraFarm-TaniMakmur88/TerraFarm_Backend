@@ -29,6 +29,8 @@ export class App {
         this.server = express();
         this.server.options('*', cors(corsOptions));
         this.server.use(cors(corsOptions));
+        this.server.use(express.json());
+        this.server.use(express.urlencoded({ extended: true })); 
 
         this.server.use('/api/field', fieldRoute.getRoutes());
         this.server.use('/api/user', userRoute.getRoutes());

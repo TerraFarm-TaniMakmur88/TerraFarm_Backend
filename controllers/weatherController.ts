@@ -11,7 +11,7 @@ export class WeatherController {
         this.authMiddleware = new AuthMiddleware();
     }
 
-    async getCurrentWeather (req: Request, res: Response) : Promise<void> {
+    public getCurrentWeather = async (req: Request, res: Response) : Promise<void> => {
         try {
             const weather = await this.weatherService.getNowWeather([Number(req.query.coordX), Number(req.query.coordY)]);
     
@@ -21,7 +21,7 @@ export class WeatherController {
         }
     };
 
-    async getWeatherInDate (req: Request, res: Response) : Promise<void> {
+    public getWeatherInDate = async (req: Request, res: Response) : Promise<void> => {
         try {
             const weather = await this.weatherService.getWeatherAtDate([Number(req.query.coordX), Number(req.query.coordY)], new Date(String(req.query.targetDate)));
     
@@ -31,7 +31,7 @@ export class WeatherController {
         }
     };
 
-    async getWeatherAtDateRange (req: Request, res: Response) : Promise<void> {
+    public getWeatherAtDateRange = async (req: Request, res: Response) : Promise<void> => {
         try {
             const weather = await this.weatherService.getWeatherInDateRange([Number(req.query.coordX), Number(req.query.coordY)], new Date(String(req.query.startDate)), 
                             new Date(String(req.query.endDate)), String(req.query.interval) || '1H');
@@ -42,7 +42,7 @@ export class WeatherController {
         }
     };
 
-    async getWeatherDataForDashboard (req: Request, res: Response) : Promise<void> {
+    public getWeatherDataForDashboard = async (req: Request, res: Response) : Promise<void> => {
         try {
             const weather = await this.weatherService.getDashboardData([Number(req.query.coordX), Number(req.query.coordY)], BigInt(this.authMiddleware.getLoggedInId(req)!));
     

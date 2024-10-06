@@ -11,7 +11,7 @@ export class ForecastController {
         this.forecastService = new WeatherForecastService();
     }
 
-    async getCurrentWeather (coordinates: number[]) {
+    public getCurrentWeather = async (coordinates: number[]) => {
         const today = new Date();
         const currWeather = await this.weatherService.getNowWeather(coordinates);
         return {
@@ -28,7 +28,7 @@ export class ForecastController {
         }
     };
 
-    async forecastTemperature (req: Request, res: Response) : Promise<void> {
+    public forecastTemperature = async (req: Request, res: Response) : Promise<void> => {
         try {
             const forecast = await this.forecastService.forecastTemp(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     
@@ -38,7 +38,7 @@ export class ForecastController {
         }
       };
 
-      async forecastWindspeed (req: Request, res: Response) : Promise<void> {
+      public forecastWindspeed = async (req: Request, res: Response) : Promise<void> => {
         try {
             const forecast = await this.forecastService.forecastWind(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     
@@ -48,7 +48,7 @@ export class ForecastController {
         }
       };
 
-      async forecastHumidity (req: Request, res: Response) : Promise<void> {
+      public forecastHumidity = async (req: Request, res: Response) : Promise<void> => {
         try {
             const forecast = await this.forecastService.forecastHumid(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     
@@ -58,7 +58,7 @@ export class ForecastController {
         }
       };
 
-      async forecastRainfall (req: Request, res: Response) : Promise<void> {
+      public forecastRainfall = async (req: Request, res: Response) : Promise<void> => {
         try {
             const forecast = await this.forecastService.forecastPrecipitation(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     

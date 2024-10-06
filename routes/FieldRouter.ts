@@ -1,6 +1,9 @@
-import express from "express";
-import { createNewFields, deleteFieldData, getField, getFieldByUser, getFieldWithStatus, updateFieldData, updateFieldPlantDate, updateFieldStatus } from "../controllers/fieldController";
-import { verifyToken } from "../middlewares/authMiddleware";
+import { Router } from "express";
+
+
+export class FieldRoute {
+    
+}
 
 const fieldRouter = express.Router();
 

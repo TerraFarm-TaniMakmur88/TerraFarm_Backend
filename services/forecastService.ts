@@ -37,7 +37,7 @@ export class WeatherForecastService {
                 precipitation: req.precipitation,
             },
         });
-        return forecast.data; // Return hanya data dari response
+        return forecast.data;
     }
 
     async forecastWind(req: ForecastReq) {
@@ -54,7 +54,7 @@ export class WeatherForecastService {
                 precipitation: req.precipitation,
             },
         });
-        return forecast.data; // Return hanya data dari response
+        return forecast.data;
     }
 
     async forecastHumid(req: ForecastReq) {
@@ -71,7 +71,7 @@ export class WeatherForecastService {
                 precipitation: req.precipitation,
             },
         });
-        return forecast.data; // Return hanya data dari response
+        return forecast.data;
     }
 
     async forecastPrecipitation(req: ForecastReq) {
@@ -88,7 +88,7 @@ export class WeatherForecastService {
                 temperature: req.temperature,
             },
         });
-        return forecast.data; // Return hanya data dari response
+        return forecast.data;
     }
 }
 

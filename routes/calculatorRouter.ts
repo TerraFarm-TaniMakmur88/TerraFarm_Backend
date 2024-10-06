@@ -1,9 +1,23 @@
-import express from "express";
-import { calculateProfit } from "../controllers/calculatorController"
-import { verifyToken } from "../middlewares/authMiddleware";
+import { Router } from "express";
+import { CalculatorController } from "../controllers/calculatorController";
+import { AuthMiddleware } from "../middlewares/authMiddleware";
 
-const calculatorRouter = express.Router();
+export class CalculatorRoute {
+    public router: Router;
+    public authMiddleware: AuthMiddleware;
+    public calculatorController: CalculatorController;
 
-calculatorRouter.post('/calculate', verifyToken, calculateProfit);
+    constructor() {
+        this.router = Router();
+        this.authMiddleware = new AuthMiddleware();
+        this.calculatorController = new CalculatorController();
+    }
 
-export default calculatorRouter;
+    public getRoutes() {
+        return this.router.post(
+            '/calculate',
+            this.authMiddleware.verifyToken(),
+            this.calculatorController.calculateProfit
+        );
+    }
+}

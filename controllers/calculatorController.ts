@@ -10,20 +10,21 @@ interface CalculatorResponse {
 }
 
 export class CalculatorController {
-    async calculateProfit (req: Request, res: Response) {
+    public calculateProfit = async (req: Request, res: Response): Promise<void> => {
         try {
             const { revenue, cost }: CalculatorRequest = req.body;
-    
+
             if (typeof revenue !== 'number' || typeof cost !== 'number') {
-                return res.status(400).json({ message: 'Revenue and cost must be valid numbers' });
+                res.status(400).json({ message: 'Revenue and cost must be valid numbers' });
+                return;
             }
-    
+
             const profit = revenue - cost;
-    
             const response: CalculatorResponse = { profit };
-            return res.status(200).json(response);
-        } catch (error : any) {
-            return res.status(500).json({ message: error.message });
+
+            res.status(200).json(response);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
         }
     };
 }

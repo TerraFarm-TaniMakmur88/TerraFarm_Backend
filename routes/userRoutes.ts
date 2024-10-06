@@ -1,11 +1,29 @@
-import express from 'express';
-import { getUser, createNewUser, loginUser } from '../controllers/userController';
-import { verifyToken } from '../middlewares/authMiddleware';
+import { Router } from 'express';
+import { UserController } from '../controllers/userController';
+import { AuthMiddleware } from '../middlewares/authMiddleware';
 
-const userRouter = express.Router();
+export class UserRoute {
+    public router: Router;
+    private userController: UserController;
+    private authMiddleware: AuthMiddleware;
 
-userRouter.get('/', verifyToken, getUser);
-userRouter.post('/', createNewUser);
-userRouter.post('/login', loginUser);
+    constructor() {
+        this.router = Router();
+        this.userController = new UserController();
+        this.authMiddleware = new AuthMiddleware();
+    }
 
-export default userRouter;
+    public getRoutes() {
+        return this.router
+            .get('/', 
+                this.authMiddleware.verifyToken(),
+                this.userController.getUser
+            )
+            .post('/', 
+                this.userController.createNewUser
+            )
+            .post('/login', 
+                this.userController.loginUser
+            );
+    }
+}

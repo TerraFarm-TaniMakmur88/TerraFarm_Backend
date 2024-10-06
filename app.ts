@@ -2,6 +2,11 @@ require("dotenv").config();
 
 import express, { Express } from "express";
 import cors from "cors";
+import { FieldRoute } from "./routes/FieldRoutes";
+import { ForecastRoute } from "./routes/forecastRoutes";
+import { UserRoute } from "./routes/userRoutes";
+import { CalculatorRoute } from "./routes/calculatorRouter";
+import { WeatherRoute } from "./routes/weatherRoutes";
 
 const port = process.env.PORT || 8080;
 const corsOptions = {
@@ -15,20 +20,26 @@ export class App {
     server: Express;
 
     constructor() {
-        const userRouter = new UserRouter();
-        const calculatorRouter = new CalculatorRouter();
-        const fieldRouter = new FieldRouter();
-        const forecastRouter = new ForecastRouter();
-        const weatherRouter = new WeatherRouter();
+        const userRoute = new UserRoute();
+        const calculatorRoute = new CalculatorRoute();
+        const fieldRoute = new FieldRoute();
+        const forecastRoute = new ForecastRoute();
+        const weatherRoute = new WeatherRoute();
 
         this.server = express();
         this.server.options('*', cors(corsOptions));
         this.server.use(cors(corsOptions));
 
-        this.server.use('/api/field', fieldRouter);
-        this.server.use('/api/user', userRouter);
-        this.server.use('/api/weather', weatherRouter);
-        this.server.use('/api/forecast', forecastRouter);
-        this.server.use('/api/calculator', calculatorRouter);
+        this.server.use('/api/field', fieldRoute.getRoutes());
+        this.server.use('/api/user', userRoute.getRoutes());
+        this.server.use('/api/weather', weatherRoute.getRoutes());
+        this.server.use('/api/forecast', forecastRoute.getRoutes());
+        this.server.use('/api/calculator', calculatorRoute.getRoutes());
+    }
+
+    run() {
+    this.server.listen(process.env.PORT || 8080, () => {
+        console.log(`⚡️[server]: Server started at http://localhost:${process.env.PORT || 8080}`);
+    });
     }
 }

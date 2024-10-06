@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "start": "npx tsx app.ts"
+    "start": "npx tsx index.ts"
   },
   "author": "tanimakmur88",
   "license": "ISC",

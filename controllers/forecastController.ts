@@ -28,43 +28,43 @@ export class ForecastController {
         }
     };
 
-    async forecastTemperature (req: Request, res: Response) {
+    async forecastTemperature (req: Request, res: Response) : Promise<void> {
         try {
             const forecast = await this.forecastService.forecastTemp(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     
             res.status(200).json(forecast.data);
         } catch (error : any) {
-            return res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
       };
 
-      async forecastWindspeed (req: Request, res: Response) {
+      async forecastWindspeed (req: Request, res: Response) : Promise<void> {
         try {
             const forecast = await this.forecastService.forecastWind(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     
             res.status(200).json(forecast.data);
         } catch (error : any) {
-            return res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
       };
 
-      async forecastHumidity (req: Request, res: Response) {
+      async forecastHumidity (req: Request, res: Response) : Promise<void> {
         try {
             const forecast = await this.forecastService.forecastHumid(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     
             res.status(200).json(forecast.data);
         } catch (error : any) {
-            return res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
       };
 
-      async forecastRainfall (req: Request, res: Response) {
+      async forecastRainfall (req: Request, res: Response) : Promise<void> {
         try {
             const forecast = await this.forecastService.forecastPrecipitation(await this.getCurrentWeather([Number(req.query.coordX), Number(req.query.coordY)]));
     
             res.status(200).json(forecast.data);
         } catch (error : any) {
-            return res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
       };
 }

@@ -3,6 +3,15 @@ import env from "dotenv";
 import { UserService } from "./userService";
 
 env.config();
+interface WeatherData {
+    parameter: string;
+    coordinates: {
+        dates: {
+            date: string;
+            value: number;
+        }[];
+    }[];
+}
 
 export class WeatherService {
     userService: UserService
@@ -45,13 +54,18 @@ export class WeatherService {
     }
 
     async getDashboardData(coordinates: number[], userId: bigint) {
-        const today = new Date();
-        const rawListWeatherData = await this.getWeatherInDateRange(coordinates, new Date(new Date().setDate(today.getDate() - 2)), new Date(new Date().setDate(today.getDate() + 2)), "24H");
+        var today = new Date();
+        const rawListWeatherData: WeatherData[] = await this.getWeatherInDateRange(
+            coordinates, 
+            new Date(new Date().setDate(today.getDate() - 2)), 
+            new Date(new Date().setDate(today.getDate() + 2)), 
+            "24H"
+        );
 
-        const tempData = rawListWeatherData.filter((value) => value.parameter === "t_2m:C")[0].coordinates[0].dates;
-        const rainfallData = rawListWeatherData.filter((value) => value.parameter === "precip_1h:mm")[0].coordinates[0].dates;
-        const windspeedData = rawListWeatherData.filter((value) => value.parameter === "wind_speed_10m:ms")[0].coordinates[0].dates;
-        const humidityData = rawListWeatherData.filter((value) => value.parameter === "absolute_humidity_2m:gm3")[0].coordinates[0].dates;
+        const tempData = rawListWeatherData.filter((data) => data.parameter === "t_2m:C")[0].coordinates[0].dates;
+        const rainfallData = rawListWeatherData.filter((data) => data.parameter === "precip_1h:mm")[0].coordinates[0].dates;
+        const windspeedData = rawListWeatherData.filter((data) => data.parameter === "wind_speed_10m:ms")[0].coordinates[0].dates;
+        const humidityData = rawListWeatherData.filter((data) => data.parameter === "absolute_humidity_2m:gm3")[0].coordinates[0].dates;
 
         const listData: any[] = [];
         for (let i = 0; i < tempData.length; i++) {
@@ -77,7 +91,7 @@ export class WeatherService {
 
         const dashboardData = {
             listData: listData,
-            insights: insights
+            insights: insights,
         };
 
         return dashboardData;

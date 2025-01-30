@@ -57,7 +57,7 @@ export class WeatherService {
         var today = new Date();
         const rawListWeatherData: WeatherData[] = await this.getWeatherInDateRange(
             coordinates, 
-            new Date(new Date().setDate(today.getDate() - 2)), 
+            new Date(new Date().setDate(today.getDate())), 
             new Date(new Date().setDate(today.getDate() + 2)), 
             "24H"
         );
